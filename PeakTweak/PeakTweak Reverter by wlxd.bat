@@ -27,9 +27,9 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 
 echo Loading all subscripts...
 echo THIS IS THE REVERTER FOR PEAKTWEAK, use PeakTweak.bat for tweaking your PC.
-SLEEP 5
+timeout 5 >nul
 
-echo EXPERIMENTAL VERSION v1
+echo EXPERIMENTAL VERSION v3
 echo WARNING: Changes made by this tweak may be difficult to reverse or require to reinstall Windows completely.
 echo This Reverter tries to undo all changes to it´s best, but it can´t revert everything.
 echo Reinstall Windows completely for a full revert of all changes.
@@ -41,7 +41,7 @@ echo Press ENTER to continue or close this window to exit...
 pause >nul
 
 cls
-SLEEP 2
+timeout 2 >nul
 
 echo PeakTweak should have automatically created a restore point.
 echo Select the Restore Point created by PeakTweak and press restore. You need to restart your PC and execute the reverter again.
@@ -132,16 +132,16 @@ echo Activating: Windows Search
 reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\WSearch" /v "Start" /t REG_DWORD /d 2 /f
 echo.
 
-SLEEP 5
+timeout 5 >nul
 cls
 echo Sysinternals Autoruns will be started shortly. Uncheck/Check all programs which shouldn´t/should start on PC-Startup.
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\AutoRuns.exe' -Verb RunAs"
 echo List of programs which could be turned on back again: OneDrive, Edge, NvTmRep_CrashReport, NvProfileUpdater, NvDriverUpdateCheckDaily, NvProfileUpdaterOnLogOn, FvSvc, Bluetooth (if disabled) and programs you don´t need.
 echo Done? Press enter to continue the script.
 pause >nul
 
-SLEEP 2
+timeout 2 >nul
 cls
 
 :gamemode
@@ -165,7 +165,7 @@ if "%choice%"=="1" (
 
 echo.
 
-SLEEP 2
+timeout 2 >nul
 cls
 :ask
 echo Do you want to enable or disable Game Bar?
@@ -185,7 +185,7 @@ if "%choice%"=="1" (
     echo Invalid choice. Please enter 1 or 2.
     goto ask
 )
-SLEEP 2
+timeout 2 >nul
 cls
 :MENU
 echo Please select your graphics card type:
@@ -209,10 +209,10 @@ if "%choice%"=="2" (
 
     echo Starting ProfileInspector...
     echo Select in the top bar the GLOBAL setting and press apply.
-    SLEEP 3
+    timeout 3 >nul
     powershell -Command "Start-Process -FilePath '%~dp0oct\inspector\nvidiaProfileInspector.exe' -Verb RunAs"
     explorer "%~dp0oct\inspector\"
-    SLEEP 2
+    timeout 2 >nul
     echo Done? Press enter to continue the script.
     pause >nul
     goto AFTER
@@ -257,43 +257,43 @@ reg add "HKEY_CURRENT_USER\Control Panel\Desktop" /v "MenuShowDelay" /t REG_SZ /
 echo Menu show delay set to 400.
 
 
-SLEEP 2
+timeout 2 >nul
 cls
 
 echo Starting TCPOptimizer
-SLEEP 2
+timeout 2 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\TCPOptimizer.exe' -Verb RunAs"
-SLEEP 2
+timeout 2 >nul
 echo Select Windows Default at the bottom and apply.
-SLEEP 5
+timeout 5 >nul
 echo Done? Press enter to continue the script.
 pause >nul
 cls
 
 echo Starting SystemExplorerSetup. (Do not delete after tweak.)
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\SystemExplorerSetup' -Verb RunAs"
 echo Complete Setup. Close security check. Reset explorer.exe Priority High and Permanent to normal.
 echo Reset WinLogOn Priority BelowNormal Permanent to normal.
-SLEEP 2
+timeout 2 >nul
 echo Done? Press enter to continue the script.
 pause >nul
 
 echo Starting WPD. (Windows Telemetry)
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\WPD.exe' -Verb RunAs"
 echo Revert Telemetry, Revert Telemetry IPs
 echo In Blocker, revert all changes.
 echo Revert all changes you did by pressing the revert button. (DO NOT DELETE ALL! YOU WILL NEED TO REINSTALL WINDOWS IF YOU DO!)
-SLEEP 2
+timeout 2 >nul
 echo Done? Press enter to continue the script.
 pause >nul
 
 echo Starting WPD. (Windows Telemetry)
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\OOSU10.exe' -Verb RunAs"
 echo Revert all changes.
-SLEEP 2
+timeout 2 >nul
 echo Done? Press enter to continue the script.
 pause >nul
 

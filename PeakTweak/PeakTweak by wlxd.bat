@@ -26,26 +26,22 @@ setlocal EnableExtensions DisableDelayedExpansion
 for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 
 echo Loading all subscripts...
-SLEEP 5
+timeout 5 >nul
 
-color 0A
-echo EXPERIMENTAL VERSION v1
+echo EXPERIMENTAL VERSION v3
 echo WARNING: Changes made by this tweak may be difficult to reverse or require to reinstall Windows completely.
 echo Please read the disclaimer.txt file before proceeding.
 echo This script does provide partial custom installation. All changes will be made.
-color 07
 echo Credits to Khorvie Tech on YouTube, his tweaks are used in this script.
 echo Press ENTER to continue or close this window to exit...
 pause >nul
-
-SLEEP 2
+cls
+timeout 2 >nul
 
 echo Creating a restore point.
 powershell -Command "Checkpoint-Computer -Description 'PeakTweak by wlxd' -RestorePointType 'APPLICATION_INSTALL'"
-color 0A
 echo Restore point set.
-color 07
-SLEEP 2
+timeout 2 >nul
 
 setlocal EnableExtensions EnableDelayedExpansion
 cd /d "%~dp0"
@@ -58,21 +54,19 @@ for /f "tokens=3 delims=: " %%G in ('powercfg -list ^| find "Khorvie"') do set "
 :: Activate the new power plan
 if defined KHORVIE_GUID (
     powercfg -setactive %KHORVIE_GUID%
-    color 0A
     echo Power plan "Khorvie" has been successfully imported and activated.
 ) else (
-    color 0C
     echo Failed to find the "Khorvie" power plan. Ensure it was imported correctly.
 )
-color 07
 
+cls
 echo UnparkCPU will be now opened as administrator. Press Unpark All and Apply, then close the program.
 
 powershell -Command "Start-Process -FilePath '%~dp0oct\UnparkCpu.exe' -Verb RunAs"
 
 echo Done? Press enter to continue the script.
 pause >nul
-
+cls
 echo WARNING: This script will disable certain Windows services to optimize performance.
 
 :: Bluetooth Audio Gateway
@@ -153,9 +147,7 @@ if /i "%userchoice%"=="y" (
     echo Windows Search indexing left unchanged.
 )
 
-color 0A
 echo All changes have been applied as per your choices.
-color 07
 
 echo IMPORTANT: Do you use a HDD (Hard Disk Drive)? (y/n) 
 set /p userchoice=Enter your choice: 
@@ -166,32 +158,32 @@ if /i "%userchoice%"=="y" (
 ) else (
     echo No changes made regarding the prefetcher service.
 )
-
-SLEEP 2
+cls
+timeout 2 >nul
 echo Sysinternals Autoruns will be started shortly. Uncheck all programs which shouldn´t start on PC-Startup.
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\AutoRuns.exe' -Verb RunAs"
 echo List of programs which could be turned off: OneDrive, Edge, NvTmRep_CrashReport, NvProfileUpdater, NvDriverUpdateCheckDaily, NvProfileUpdaterOnLogOn, FvSvc, Bluetooth (if disabled) and programs you don´t need.
 echo Done? Press enter to continue the script.
 pause >nul
 
-SLEEP 2
+timeout 2 >nul
 echo Now delete unused apps.
-SLEEP 5
+timeout 2 >nul
 start ms-settings:appsfeatures
 echo Done? Press enter to continue the script.
 pause >nul
 
-SLEEP 2
+timeout 2 >nul
 echo Activating gamemode...
 powershell -Command "Set-ItemProperty -Path 'HKCU:\SOFTWARE\Microsoft\GameBar' -Name 'AutoGameMode' -Value 1"
-SLEEP 2
+timeout 2 >nul
 
-SLEEP 2
+timeout 2 >nul
 echo Deactivating GameBar...
 powershell -Command "Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\GameBar' -Name 'AutoGameBar' -Value 0"
-SLEEP 2
-
+timeout 2 >nul
+cls
 :MENU
 echo Please select your graphics card type:
 echo 1 - AMD
@@ -208,16 +200,16 @@ if "%choice%"=="1" (
 if "%choice%"=="2" (
     echo You selected NVIDIA.
     echo Starting NVCleanstall...
-    SLEEP 2
+    timeout 2 >nul
     powershell -Command "Start-Process -FilePath '%~dp0oct\NVCleanstall.exe' -Verb RunAs"
-    SLEEP 3
+    timeout 3 >nul
     echo Follow this list of instructions carefully:
     echo Select manually driver version: 546.29 Desktop.
     echo Next, see through the list for things you need. If you use Clips in Geforce, activate ShadowPlay.
     echo Press next and all services needed will be installed.
-    SLEEP 10
+    timeout 5 >nul
     echo Now, enable following installation tweaks:
-    echo Disable Installer Telemetry, Unattended Installation, Clean Installation, Disable MPO, Disable Ansel, Expert: Disable HD Audio sleep timer
+    echo Disable Installer Telemetry, Unattended Installation, Clean Installation, Disable MPO, Disable Ansel, Expert: Disable HD Audio timeout timer
     echo Enable Message Interrupts: Policy Default and Priority High, Disable HDCP
 
     echo Done? Press enter to continue the script.
@@ -225,10 +217,10 @@ if "%choice%"=="2" (
 
     echo Starting ProfileInspector...
     echo Drag and drop khorviePI.nip in the Inspector program and press apply.
-    SLEEP 5
+    timeout 5 >nul
     powershell -Command "Start-Process -FilePath '%~dp0oct\inspector\nvidiaProfileInspector.exe' -Verb RunAs"
     explorer "%~dp0oct\inspector\"
-    SLEEP 2
+    timeout 2 >nul
     echo Done? Press enter to continue the script.
     pause >nul
     goto AFTER
@@ -241,7 +233,7 @@ if "%choice%"=="3" (
 echo Invalid choice. Please try again.
 timeout /t 2 >nul
 goto MENU
-
+cls
 :AFTER
 
 echo Starting registry tweaks... WARNING: Restore point doesn´t restore the registry. Make sure to back up your registry.
@@ -309,18 +301,19 @@ if /i "%choice6%"=="y" (
 
 echo All tweaks checked.
 
-SLEEP 2
+timeout 2 >nul
+cls
 echo Now delete unused network adapters.
-SLEEP 5
+timeout 5 >nul
 start C:\Windows\System32\devmgmt.msc
 echo Done? Press enter to continue the script.
 pause >nul
-
+cls
 
 echo Starting TCPOptimizer
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\TCPOptimizer.exe' -Verb RunAs"
-SLEEP 2
+timeout 2 >nul
 echo Follow these instructions carefully:
 echo Connection Speed to the max.
 echo Auto Tuning: disabled (tanks internet speed but provides faster reaction speed), Congestion: CUBIC (throughput) or ctcp (latency)
@@ -330,48 +323,49 @@ echo Retransmissions: 2, disabled
 echo RTO: 2000, 300
 echo Gaming Tweak SysResponsiveness set to gaming
 echo Apply changes. Create a Backup. Do not restart your PC.
-SLEEP 5
+timeout 5 >nul
+echo Note: If you run into issues, open TCPOptimizer and select Windows Default and apply.
 echo Done? Press enter to continue the script.
 pause >nul
-echo Note: If you run into issues, open TCPOptimizer and select Windows Default and apply.
 
+cls
 echo Starting DeviceCleanup. (Cleanup all unused devices.)
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\DeviceCleanup.exe' -Verb RunAs"
 echo Go to Devices, select all and remove selected. 
-SLEEP 2
+timeout 2 >nul
 echo Done? Press enter to continue the script.
 pause >nul
-
+cls
 echo Starting SystemExplorerSetup. (Do not delete after tweak.)
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\SystemExplorerSetup' -Verb RunAs"
 echo Complete Setup. Close security check. Set explorer.exe Priority High and Permanent.
 echo WinLogOn Priority BelowNormal Permanent.
 echo Options: Show Info Panel off.
-SLEEP 2
+timeout 2 >nul
 echo Done? Press enter to continue the script.
 pause >nul
-
+cls
 echo Starting WPD. (Windows Telemetry)
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\WPD.exe' -Verb RunAs"
 echo Disable Telemetry, Block Telemetry IPs
 echo In Blocker, enable Windows Defender Firewall.
 echo In Apps, delete Game Bar, Tips, Onedrive, Get Help. (DO NOT DELETE ALL! YOU WILL NEED TO REINSTALL WINDOWS IF YOU DO!)
-SLEEP 2
+timeout 2 >nul
 echo Done? Press enter to continue the script.
 pause >nul
-
+cls
 echo Starting WPD. (Windows Telemetry)
-SLEEP 5
+timeout 5 >nul
 powershell -Command "Start-Process -FilePath '%~dp0oct\OOSU10.exe' -Verb RunAs"
 echo Do not create restore point.
 echo Apply, if you have issues go on actions and revert all changes.
-SLEEP 2
+timeout 2 >nul
 echo Done? Press enter to continue the script.
 pause >nul
-
+cls
 echo Almost done. The script will start to automatically delete temporary files and your file history. You will not lose any data.
 
 echo Continue? Press enter to continue the script.
