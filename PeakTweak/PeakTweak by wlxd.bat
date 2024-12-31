@@ -40,6 +40,7 @@ timeout 2 >nul
 
 echo Creating a restore point.
 powershell -Command "Checkpoint-Computer -Description 'PeakTweak by wlxd' -RestorePointType 'APPLICATION_INSTALL'"
+timeout 10 >nul
 echo Restore point set.
 timeout 2 >nul
 
